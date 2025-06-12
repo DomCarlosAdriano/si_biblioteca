@@ -133,5 +133,41 @@ public class AlunoDAO {
         }
     }
 
+    //Retornar dados do aluno que efetuou uma locação.
+
+    public Aluno obterAlunoPorIdLocacao(int locacaoId) {
+        String SQL = """
+            SELECT al.* 
+            FROM operacao op 
+            LEFT JOIN aluno al ON op.aluno_id = al.id 
+            WHERE op.aluno_id IS NOT NULL AND op.id = ?
+        """;
+
+        try {
+            ps = conexao.getConn().prepareStatement(SQL);
+            ps.setInt(1, locacaoId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Aluno aluno = new Aluno(
+                        rs.getString("cpf"), rs.getString("nome"),
+                        rs.getString("email"), rs.getString("curso"),
+                        rs.getString("periodo"), rs.getString("turno"),
+                        rs.getString("matricula"), rs.getString("login"),
+                        rs.getString("senha")
+                );
+                aluno.setTelefone(rs.getString("telefone"));
+                aluno.setEnderecoId(rs.getInt("endereco_id"));
+                rs.close();
+                ps.close();
+                return aluno;
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

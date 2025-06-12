@@ -127,5 +127,37 @@ public class ProfessorDAO {
         }
     }
 
+    // ✅ Método adicionado: retorna o professor que mais realizou locações
+    public String buscarProfessorComMaisLocacoes() {
+        String SQL = """
+            SELECT p.nome, COUNT(*) AS quantidade_locada
+            FROM professor p
+                     INNER JOIN operacao op ON op.professor_id = p.id
+            WHERE op.tipo_operacao = 'LOCACAO'
+            GROUP BY p.nome
+            ORDER BY quantidade_locada DESC
+            LIMIT 1
+        """;
+
+        try {
+            ps = conexao.getConn().prepareStatement(SQL);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String nome = rs.getString("nome");
+                int quantidade = rs.getInt("quantidade_locada");
+                rs.close();
+                ps.close();
+                return nome + " - " + quantidade + " locações";
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return "Nenhuma locação encontrada.";
+    }
 
 }

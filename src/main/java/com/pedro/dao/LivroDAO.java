@@ -125,4 +125,36 @@ public class LivroDAO {
         return null;
     }
 
+
+    // ✅ Método adicionado: conta quantas vezes o livro foi locado
+    public int contarLocacoesPorLivro(int livroId) {
+        String SQL = """
+            SELECT COUNT(*) AS total
+            FROM livro l
+                     LEFT JOIN exemplar e ON e.livro_id = l.id
+                     LEFT JOIN operacao op ON op.exemplar_id = e.id
+            WHERE op.tipo_operacao = 'LOCACAO' AND l.id = ?
+        """;
+
+        try {
+            ps = conexao.getConn().prepareStatement(SQL);
+            ps.setInt(1, livroId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int total = rs.getInt("total");
+                rs.close();
+                ps.close();
+                return total;
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
 }
