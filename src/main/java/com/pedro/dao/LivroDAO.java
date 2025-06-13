@@ -126,7 +126,7 @@ public class LivroDAO {
     }
 
 
-    // ✅ Método adicionado: conta quantas vezes o livro foi locado
+    // Método adicionado: conta quantas vezes o livro foi locado
     public int contarLocacoesPorLivro(int livroId) {
         String SQL = """
             SELECT COUNT(*) AS total

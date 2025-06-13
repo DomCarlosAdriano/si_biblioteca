@@ -115,4 +115,15 @@ public class LivroService {
 
         return true;
     }
+
+    // ✅ Método adicionado para contar as locações de um livro
+    public int obterQuantidadeDeLocacoesPorLivro(int livroId) {
+        int total = livroDAO.contarLocacoesPorLivro(livroId);
+        if (total > 0) {
+            return total;
+        } else {
+            System.out.println("[!] Nenhuma locação encontrada para o livro de ID " + livroId);
+            return 0;
+        }
+    }
 }

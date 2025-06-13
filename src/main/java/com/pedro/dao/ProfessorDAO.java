@@ -127,7 +127,7 @@ public class ProfessorDAO {
         }
     }
 
-    // ✅ Método adicionado: retorna o professor que mais realizou locações
+    // Método adicionado: retorna o professor que mais realizou locações
     public String buscarProfessorComMaisLocacoes() {
         String SQL = """
             SELECT p.nome, COUNT(*) AS quantidade_locada

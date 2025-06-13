@@ -134,7 +134,6 @@ public class AlunoDAO {
     }
 
     //Retornar dados do aluno que efetuou uma locação.
-
     public Aluno obterAlunoPorIdLocacao(int locacaoId) {
         String SQL = """
             SELECT al.* 
